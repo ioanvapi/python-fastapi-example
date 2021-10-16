@@ -30,6 +30,7 @@ share/python-wheels/
 .env
 .venv
 env/
+venv
 venv/
 ENV/
 env.bak/
