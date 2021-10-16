@@ -50,6 +50,8 @@ $ uvicorn main:app --reload
 
 Update .gitignore with venv before commit.
 
+### GET methods
+
 Code below creates several endpoints, all for GET method request:
 
 * / - handled by index() function
@@ -78,3 +80,23 @@ def getItem(itemId: int, qp: Optional[str] = None):
 
 ```
 
+### Add code to create and update 
+
+It uses [pydantic](https://pydantic-docs.helpmanual.io/) for data validation, settings management and enforces type hints, user friedly error.
+
+``` python
+class Item(BaseModel):
+    name: str
+    price: float
+    isOffer: Optional[bool] = None # it is not required in a POST/PUT
+
+# creates a new item
+@app.post("/item")
+def newItem(item: Item):
+    return {"item": item, "message": "New item created."}
+
+# updates an item
+@app.put("/item/{itemId}")
+def updateItem(itemId: int, item: Item):
+    return {"itemName": item.name, "itemPrice": item.price, "itemId": itemId}
+```
