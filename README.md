@@ -50,5 +50,31 @@ $ uvicorn main:app --reload
 
 Update .gitignore with venv before commit.
 
+Code below creates several endpoints, all for GET method request:
 
+* / - handled by index() function
+* /task/{taskId} - handled by getTask(taskId: int) that receives the **path param** from request. Test it with http://localhost:8000/task/25
+* /item/{itemId} - handled by getItem(itemId: int, qp: Optional[str] = None) that receives both **path param** and **query param**. Test it with http://localhost:8000/item/12?qp=blue
+  
+**Note**: FastAPI provides usefull endpoints (swagger) to test this endpoints. You can use any of:
+* [http://localhost:8000/docs](http://localhost:8000/docs)
+* [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+
+``` python
+@app.get("/")
+def index():
+    return {"Hello", "World"}
+
+
+@app.get("/task/{taskId}")
+def getTask(taskId: int):
+    return {"taskId": taskId}
+
+
+@app.get("/item/{itemId}")
+def getItem(itemId: int, qp: Optional[str] = None):
+    return {"taskId": itemId, "qp": qp}
+
+```
 
