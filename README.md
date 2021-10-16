@@ -50,7 +50,7 @@ $ uvicorn main:app --reload
 
 Update .gitignore with venv before commit.
 
-### GET methods
+### Add code to handle GET requests
 
 Code below creates several endpoints, all for GET method request:
 
@@ -80,7 +80,7 @@ def getItem(itemId: int, qp: Optional[str] = None):
 
 ```
 
-### Add code to create and update 
+### Add code to handle POST and PUT requests 
 
 It uses [pydantic](https://pydantic-docs.helpmanual.io/) for data validation, settings management and enforces type hints, user friedly error.
 
@@ -100,3 +100,39 @@ def newItem(item: Item):
 def updateItem(itemId: int, item: Item):
     return {"itemName": item.name, "itemPrice": item.price, "itemId": itemId}
 ```
+
+
+### Enable CORS
+
+FastAPI manages [CORS](https://fastapi.tiangolo.com/tutorial/cors/) by integrating a [middleware](https://fastapi.tiangolo.com/advanced/middleware/).
+
+``` python
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost.com",
+    "https://localhost.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+# The middleware will handle OPTIONS request with Origin and Access-Control-Request-Method headers
+# but will pass the requests through as normal otherwise.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+
+
+
+
+
+## Dockerize
+
+[Here](https://fastapi.tiangolo.com/deployment/docker/#build-a-docker-image-for-fastapi) is the way FastAPI recommend dockerizing the app.
+

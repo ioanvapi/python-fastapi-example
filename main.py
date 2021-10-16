@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -35,4 +36,22 @@ def newItem(item: Item):
 def updateItem(itemId: int, item: Item):
     return {"itemName": item.name, "itemPrice": item.price, "itemId": itemId}
 
-    
+
+origins = [
+    "http://localhost.com",
+    "https://localhost.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+# The middleware will handle OPTIONS request with Origin and Access-Control-Request-Method headers
+# but will pass the requests through as normal otherwise.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT"],
+    allow_headers=["*"],
+    max_age=3600,
+)
+
